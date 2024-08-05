@@ -1,0 +1,59 @@
+class MinStack {
+public:
+
+    vector<long long> arr;
+    long long mini;
+
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+        if(arr.size() == 0){
+            arr.push_back(val);
+            mini = val;
+        }
+
+        else{
+            if(val < mini){
+                long long a = 2*(long long)val - mini;
+                arr.push_back(a);
+                mini = val;
+            }
+            else{
+                arr.push_back(val);
+            }
+        }
+    }
+    
+    void pop() {
+        
+        if(arr.size() == 0){
+            return;
+        }
+
+        if(arr.back() < mini){
+            long long a = arr.back();
+            arr.pop_back();
+            mini = 2*mini - a;
+        }
+        else{
+            arr.pop_back();
+        }
+
+
+    }
+    
+    int top() {
+        if(arr.back() < mini){
+            return mini;
+        }
+        else{
+            return arr.back();
+        }
+    }
+    
+    int getMin() {
+        return (int)mini;
+    }
+};
