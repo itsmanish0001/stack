@@ -1,0 +1,103 @@
+class Solution {
+public:
+
+    vector<int> nextSmaller(vector<int> heights){
+        int n = heights.size();
+        vector<int> next(n);
+        stack<int> st;
+        st.push(-1);
+
+        for(int i = n-1; i >= 0; i--){
+
+            if(st.top() == -1){
+                next[i] = n;
+            }
+            else{
+                if(heights[st.top()] < heights[i]){
+                    next[i] = st.top();
+                }
+                else{
+                    while(st.top() != -1 && heights[st.top()] >= heights[i]){
+                        st.pop();
+                    }
+                    if(st.top() == -1){
+                        next[i] = n;
+                    }
+                    else{
+                        next[i] = st.top();
+                    }
+                }
+            }
+
+            st.push(i);
+
+
+        }
+
+        return next;
+    }
+
+    vector<int> prevSmaller(vector<int> &arr){
+        int n = arr.size();
+        vector<int> prev(n);
+        stack<int> s;
+        s.push(-1);
+
+        for(int i = 0; i < n; i++){
+            int curr = i;
+
+            while(s.top() != -1 && arr[s.top()] >= arr[curr]){
+                s.pop();
+            }
+
+           prev[i] = s.top();
+           s.push(curr);
+        }
+
+        return prev;
+    }
+
+
+    int largestRectangleArea(vector<int>& heights) {
+
+        vector<int> next = nextSmaller(heights);
+        vector<int> prev = prevSmaller(heights);
+        
+        for(auto it: next){
+            cout << it <<" ";
+        }
+
+        cout << endl;
+
+         for(auto it: prev){
+            cout << it <<" ";
+        }
+
+        int ans = INT_MIN;
+
+        for(int i = 0; i < heights.size(); i++){
+            int height = heights[i];
+            int previous = prev[i];
+            int nextt = next[i];
+            int width = nextt - previous - 1;
+
+            int area = width * height;
+
+            ans = max(ans, area);
+        }
+
+        return ans;
+
+
+
+
+
+
+
+
+
+
+        return 0;
+        
+    }
+};
